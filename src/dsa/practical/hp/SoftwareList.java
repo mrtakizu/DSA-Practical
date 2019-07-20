@@ -116,7 +116,7 @@ public class SoftwareList {
         if (root == null) {
             System.out.println("Empty!");
         } else {
-            System.out.println(String.format("%s%20s%5s%5s", "Software Name", " || Version || ", "Quantity || ", "Price"));
+            System.out.println(String.format("%-20s%20s%5s%5s", "Software Name", " || Version || ", "Quantity || ", "Price"));
             printList(root);
         }
 
@@ -131,7 +131,7 @@ public class SoftwareList {
     }
 
     private boolean valid(String s) {
-        if (!s.matches("[a-zA-Z0-9\\s]+") || s.isEmpty()) {
+        if (!s.matches("[A-Za-z0-9.\\s]+") || s.isEmpty()) {
             return false;
         }
         return true;
@@ -151,12 +151,12 @@ public class SoftwareList {
         System.out.println("Enter new Software name:");
         do {
             name = StringUtils.capitalize(sc.nextLine().trim().toLowerCase());
-        } while (valid(name));
+        } while (!valid(name));
 
         System.out.println("Enter new Software version:");
         do {
-        version = sc.nextLine().trim();
-        } while (valid(version));
+            version = sc.nextLine().trim();
+        } while (!valid(version));
         System.out.println("Enter new Software quantity:");
         do {
             quantity = sc.nextLine().trim();
@@ -192,6 +192,10 @@ public class SoftwareList {
     }
 
     public void purchase() {
+        if (root == null) {
+            System.out.println("Empty!");
+            return;
+        }
         Scanner sc = new Scanner(System.in);
         Node purchased;
         System.out.println("Enter software name to purchase:");
@@ -242,36 +246,53 @@ public class SoftwareList {
             FileReader f = new FileReader(fileSoftware);
             BufferedReader br = new BufferedReader(f);
             String[] lineContent;
-            String s, updated = "";
+            String s;
             while ((s = br.readLine()) != null) {
                 softwareList.add(s);
             }
-            for (int i = 0; i < softwareList.size(); i++) {
-                lineContent = softwareList.get(i).split(";");
+            if (softwareList.isEmpty()) {
+                System.exit(0);
+            } else if (softwareList.size() == 1) {
+                lineContent = softwareList.get(0).split(";");
                 if (Integer.parseInt(lineContent[3]) == 0) {
-                    pos = Integer.parseInt(lineContent[0]);
-                    softwareList.set(i, softwareList.get(softwareList.size() - 1));
-                    softwareList.get(i).replaceFirst(String.valueOf(softwareList.size() - 1), String.valueOf(i));
-                    softwareList.remove(softwareList.size() - 1);
+                    softwareList.clear();
                 }
-
+            } else {
+                for (int i = 0; i < softwareList.size(); i++) {
+                    lineContent = softwareList.get(i).split(";");
+                    if (Integer.parseInt(lineContent[3]) == 0) {
+                        pos = Integer.parseInt(lineContent[0]);
+                        softwareList.set(i, softwareList.get(softwareList.size() - 1));
+                        softwareList.get(i).replaceFirst(String.valueOf(softwareList.size() - 1), String.valueOf(i));
+                        softwareList.remove(softwareList.size() - 1);
+                    }
+                }
             }
             br.close();
             f.close();
             FileWriter fw = new FileWriter(fileSoftware);
             PrintWriter pw = new PrintWriter(fw);
-            for (int i = 0; i < softwareList.size(); i++) {
-                if (i == softwareList.size() - 1) {
-                    pw.print(softwareList.get(i));
-                } else {
-                    pw.println(softwareList.get(i));
+            if (softwareList.isEmpty()) {
+                System.exit(0);
+            } else if (softwareList.size() == 1) {
+                lineContent = softwareList.get(0).split(";");
+                if (Integer.parseInt(lineContent[3]) == 0) {
+                    softwareList.clear();
+                }
+            } else {
+                for (int i = 0; i < softwareList.size(); i++) {
+                    if (i == softwareList.size() - 1) {
+                        pw.print(softwareList.get(i));
+                    } else {
+                        pw.println(softwareList.get(i));
+                    }
                 }
             }
             pw.close();
             fw.close();
             System.exit(0);
         } catch (Exception e) {
-            System.out.println(e);
+//            System.out.println(e);
         }
     }
 

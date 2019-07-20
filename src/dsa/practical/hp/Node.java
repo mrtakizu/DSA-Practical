@@ -56,7 +56,7 @@ public class Node {
 
     @Override
     public String toString() {
-        return String.format("%s%12s%10d%10d", getSoftware().getName(),getSoftware().getVersion(),getAttributes().getQuanity(),getAttributes().getPrice());
+        return String.format("%-20s%13s%12d%12d", getSoftware().getName(),getSoftware().getVersion(),getAttributes().getQuanity(),getAttributes().getPrice());
     }
     
     
