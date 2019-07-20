@@ -1,0 +1,6 @@
+1;Photoshop;7.0;6;500;
+2;Norton Ghost;1.0;6;200
+3;Tera copy;2.0;10;200
+4;Office;2.1;5;200
+5;Bkav;5.6;1;50;
+6;Bkav;1.0;12;50
